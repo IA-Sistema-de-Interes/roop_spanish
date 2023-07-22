@@ -114,10 +114,10 @@ def limit_resources() -> None:
 
 def pre_check() -> bool:
     if sys.version_info < (3, 9):
-        update_status('Python version is not supported - please upgrade to 3.9 or higher.')
+        update_status('La versión de Python no es compatible; actualice a 3.9 o superior.')
         return False
     if not shutil.which('ffmpeg'):
-        update_status('ffmpeg is not installed.')
+        update_status('Ffmpeg no está instalado.')
         return False
     return True
 
@@ -139,59 +139,59 @@ def start() -> None:
         shutil.copy2(roop.globals.target_path, roop.globals.output_path)
         # process frame
         for frame_processor in get_frame_processors_modules(roop.globals.frame_processors):
-            update_status('Progressing...', frame_processor.NAME)
+            update_status('Progresando...', frame_processor.NAME)
             frame_processor.process_image(roop.globals.source_path, roop.globals.output_path, roop.globals.output_path)
             frame_processor.post_process()
         # validate image
         if is_image(roop.globals.target_path):
-            update_status('Processing to image succeed!')
+            update_status('¡Procesamiento para lograr la imagen!')
         else:
-            update_status('Processing to image failed!')
+            update_status('¡Error al procesar la imagen!')
         return
     # process image to videos
     if predict_video(roop.globals.target_path):
         destroy()
-    update_status('Creating temp resources...')
+    update_status('Creando recursos temporales...')
     create_temp(roop.globals.target_path)
     # extract frames
     if roop.globals.keep_fps:
         fps = detect_fps(roop.globals.target_path)
-        update_status(f'Extracting frames with {fps} FPS...')
+        update_status(f'Extracción de fotogramas con {fps} FPS...')
         extract_frames(roop.globals.target_path, fps)
     else:
-        update_status('Extracting frames with 30 FPS...')
+        update_status('Extrayendo fotogramas con 30 FPS...')
         extract_frames(roop.globals.target_path)
     # process frame
     temp_frame_paths = get_temp_frame_paths(roop.globals.target_path)
     for frame_processor in get_frame_processors_modules(roop.globals.frame_processors):
-        update_status('Progressing...', frame_processor.NAME)
+        update_status('Progresando...', frame_processor.NAME)
         frame_processor.process_video(roop.globals.source_path, temp_frame_paths)
         frame_processor.post_process()
     # create video
     if roop.globals.keep_fps:
         fps = detect_fps(roop.globals.target_path)
-        update_status(f'Creating video with {fps} FPS...')
+        update_status(f'Creación de vídeo con {fps} FPS...')
         create_video(roop.globals.target_path, fps)
     else:
-        update_status('Creating video with 30 FPS...')
+        update_status('Creando video con 30 FPS...')
         create_video(roop.globals.target_path)
     # handle audio
     if roop.globals.skip_audio:
         move_temp(roop.globals.target_path, roop.globals.output_path)
-        update_status('Skipping audio...')
+        update_status('Saltando audio...')
     else:
         if roop.globals.keep_fps:
-            update_status('Restoring audio...')
+            update_status('Restaurando audio...')
         else:
-            update_status('Restoring audio might cause issues as fps are not kept...')
+            update_status('Restaurar audio puede causar problemas ya que no se mantienen los fps...')
         restore_audio(roop.globals.target_path, roop.globals.output_path)
     # clean temp
     clean_temp(roop.globals.target_path)
     # validate video
     if is_video(roop.globals.target_path):
-        update_status('Processing to video succeed!')
+        update_status('¡Procesando para que el video tenga éxito!')
     else:
-        update_status('Processing to video failed!')
+        update_status('¡Error al procesar el video!')
 
 
 def destroy() -> None:
