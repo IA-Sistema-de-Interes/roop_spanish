@@ -189,7 +189,7 @@ def start() -> None:
     clean_temp(roop.globals.target_path)
     # validate video
     if is_video(roop.globals.target_path):
-        update_status('¡Procesando para que el video tenga éxito!')
+        update_status('¡Procesando del Video DeepFake con éxito!')
     else:
         update_status('¡Error al procesar el video!')
 
