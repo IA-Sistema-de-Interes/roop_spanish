@@ -32,10 +32,7 @@ def clear_face_swapper() -> None:
     FACE_SWAPPER = None
 
 
-def pre_check() -> bool:
-    download_directory_path = resolve_relative_path('../models')
-    conditional_download(download_directory_path, ['https://huggingface.co/henryruhs/roop/resolve/main/inswapper_128.onnx'])
-    return True
+
 
 
 def pre_start() -> bool:
